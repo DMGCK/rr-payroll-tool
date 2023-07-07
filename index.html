@@ -65,7 +65,71 @@
         </div>
         <div class="col-12" id="routesFieldContainer"></div>
         <div class="fixed-bottom">
-          TOTAL STOPS <span id="totalStops"></span>
+          <!-- TOTAL STOPS <span id="totalStops"></span> -->
+          <!-- Button trigger modal -->
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            Info and Tutorial
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Info and Tutorial
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div>
+              Thank you for using my calculator, I hope it makes your life
+              easier.
+            </div>
+            <div>
+              <br />
+            </div>
+            <div>
+              If you have any feedback or need changes made to the functions
+              please contact Cameron Kueneman.
+            </div>
+
+            <div>
+              <br />
+              Some peculiarities of this calculator in this current version. If
+              you select a new set of places or dates, your current work is
+              deleted without any method of recreating it other than doing it
+              again. Not fun, that's my first planned fix.
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </div>

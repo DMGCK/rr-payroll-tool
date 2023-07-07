@@ -135,11 +135,10 @@ function createTotalsField(month, day, totals) {
   return template;
 }
 
-function updateTotals(event) {
-  console.log("updateTotals");
-  const inputs = document.querySelectorAll(`#routesFieldContainer div input`);
-  let valueForDay = {};
+function updateTotals() {
+  const valueForDay = {};
   let totalRuns = 0;
+  const inputs = document.querySelectorAll(`#routesFieldContainer div input`);
   for (field in inputs) {
     const date = inputs[field].id?.substring(0, 4);
     const route = inputs[field].id?.substring(4, inputs[field].id?.length);
@@ -162,7 +161,7 @@ function updateTotals(event) {
 
     totalRuns += runs ? runs : 0;
   }
-  document.getElementById("totalStops").innerText = totalRuns;
+  //   document.getElementById("totalStops").innerText = totalRuns;
 
   let totalsHtml = "";
 
@@ -176,9 +175,9 @@ function updateTotals(event) {
       valueForDay[date].gasDiem +
       valueForDay[date].routePay;
 
-    console.log(valueForDay[date]);
-
-    totalsHtml += createTotalsField(date, "", valueForDay[date]);
+    if (date[0] != "u") {
+      totalsHtml += createTotalsField(date, "", valueForDay[date]);
+    }
   }
   totalsContainerElement.innerHTML = totalsHtml;
 }
