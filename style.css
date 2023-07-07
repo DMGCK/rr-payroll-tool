@@ -1,0 +1,14 @@
+
+.route {
+    .col-1 {
+        font-weight: bold;
+    }
+
+    .col-11 div {
+        width: 4rem;
+
+    }
+    .col-11 div input {
+        width: 3rem;
+    }
+}

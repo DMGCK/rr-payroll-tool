@@ -1,0 +1,11 @@
+{
+  "name": "rr-payroll-tool",
+  "version": "1.0.0",
+  "description": "This is a tool to assist my co-worker in calculating payroll.\r Performs simple math operations and has a more user friendly interface than her current tool.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
