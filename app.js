@@ -4,6 +4,7 @@ const routesElement = document.getElementById("routeList");
 const routesFieldContainerElement = document.getElementById(
   "routesFieldContainer"
 );
+const totalsContainerElement = document.getElementById("totalsContainer");
 
 routesFieldContainer;
 // prettier-ignore
@@ -15,6 +16,7 @@ let endDate = null;
 calendarStartElement.addEventListener("change", setStartDate);
 calendarEndElement.addEventListener("change", setEndDate);
 routesElement.addEventListener("change", updateActiveRoutes);
+routesFieldContainerElement.addEventListener("input", updateTotals);
 
 function setStartDate(event) {
   startDate = event.srcElement.value;
@@ -51,6 +53,7 @@ for (route in routes) {
 }
 
 function drawFields() {
+  totalsContainerElement.innerHTML = "";
   routesFieldContainerElement.innerHTML = "";
   if (typeof startDate != "string" || typeof endDate != "string") {
     return;
@@ -82,11 +85,20 @@ function drawFields() {
     for (route in activeRoutes) {
       if (
         document.getElementById(`${route}Container`) != null &&
-        document.getElementById(`${route}${dateInfo[1]}${dateInfo[2]}Field`) ==
-          null
-      )
+        document.getElementById(`${dateInfo[1]}${dateInfo[2]}${route}`) == null
+      ) {
         document.getElementById(`${route}Container`).innerHTML +=
           createRouteDayField(dateInfo[1], dateInfo[2], route);
+      }
+
+      if (
+        document.getElementById(`${dateInfo[1]}${dateInfo[2]}Total`) == null
+      ) {
+        totalsContainerElement.innerHTML += createTotalsField(
+          dateInfo[1],
+          dateInfo[2]
+        );
+      }
     }
 
     startDateCopy.stepUp();
@@ -94,7 +106,6 @@ function drawFields() {
 }
 
 function createRouteField(route) {
-  console.log("createRouteField");
   const template = `
     <div class="row route">
     <div class="col-1">${route}</div>
@@ -107,10 +118,38 @@ function createRouteField(route) {
 }
 
 function createRouteDayField(month, day, route) {
-  console.log("createRouteDayField");
   const template = `<div class="mx-1">
         ${month}/${day}
-        <input type="number" name="${route}${month}${day}" id="${route}${month}${day}Field" />
+        <input value="0" type="number" name="${route}${month}${day}" id="${month}${day}${route}" />
     </div>`;
   return template;
+}
+
+function createTotalsField(month, day) {
+  const template = `<div class="mx-1">
+          ${month}/${day}
+          <div id="${month}${day}Total"></div>
+      </div>`;
+  return template;
+}
+
+function updateTotals(event) {
+  const inputs = document.querySelectorAll(`#routesFieldContainer div input`);
+  let runsForDay = {};
+  let totalRuns = 0;
+  for (field in inputs) {
+    console.log(inputs[field].id?.substring(0, 4));
+    console.log(inputs[field].id?.substring(4, inputs[field].id?.length));
+    try {
+      if (
+        inputs[field].value != "NaN" &&
+        typeof inputs[field].value != "undefined"
+      ) {
+        totalRuns += parseInt(inputs[field]?.value);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  document.getElementById("totalStops").innerText = totalRuns;
 }
