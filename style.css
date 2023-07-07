@@ -1,6 +1,11 @@
+body {
+    text-align: center;
+}
+
 
 .route {
-    .col-1 {
+    .col-1 :nth-child(2) {
+        font-size: xx-large;
         font-weight: bold;
     }
 
@@ -8,6 +13,23 @@
         width: 4rem;
 
     }
+
+    .col-11 div div :first-of-type {
+        font-size: xx-large;
+        font-weight: bold;
+
+        
+    }
+
+    .col-11 div div :first-of-type:hover {
+        background-color: rgb(109, 229, 233);
+        opacity: 90%;
+
+        transition: ease .2s;
+        cursor: pointer;
+        
+    }
+
     .col-11 div input {
         width: 3rem;
     }

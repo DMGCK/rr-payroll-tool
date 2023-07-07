@@ -80,9 +80,6 @@ function drawFields() {
       ) {
         routesFieldContainerElement.innerHTML += createRouteField(route);
       }
-    }
-
-    for (route in activeRoutes) {
       if (
         document.getElementById(`${route}Container`) != null &&
         document.getElementById(`${dateInfo[1]}${dateInfo[2]}${route}`) == null
@@ -90,24 +87,23 @@ function drawFields() {
         document.getElementById(`${route}Container`).innerHTML +=
           createRouteDayField(dateInfo[1], dateInfo[2], route);
       }
-
       if (
         document.getElementById(`${dateInfo[1]}${dateInfo[2]}Total`) == null
       ) {
         totalsContainerElement.innerHTML += createTotalsField(
           dateInfo[1],
-          dateInfo[2]
+          dateInfo[2],
+          0
         );
       }
     }
-
     startDateCopy.stepUp();
   }
 }
 
 function createRouteField(route) {
   const template = `
-    <div class="row route">
+    <div class="row route my-2">
     <div class="col-1">${route}</div>
     <div class="col-11 d-flex" id="${route}Container">
     
@@ -119,37 +115,74 @@ function createRouteField(route) {
 
 function createRouteDayField(month, day, route) {
   const template = `<div class="mx-1">
-        ${month}/${day}
+  ${month}/${day}
         <input value="0" type="number" name="${route}${month}${day}" id="${month}${day}${route}" />
     </div>`;
   return template;
 }
 
-function createTotalsField(month, day) {
+function createTotalsField(month, day, totals) {
+  //prettier-ignore
   const template = `<div class="mx-1">
-          ${month}/${day}
-          <div id="${month}${day}Total"></div>
+          ${day ? `${month}/${day}` : `${month.substring(0,2)}/${month.substring(2,4)}`} 
+          <div id=""> 
+            <div onclick="copyToClipBoard(${totals.total})" title="Click to Copy" id="${month}${day}Total">${totals.total ? totals.total : 0}</div>
+            <div id="${month}${day}RoutePay">${totals.routePay ? totals.routePay : 0}</div>
+            <div id="${month}${day}GasDiem">${totals.gasDiem ? totals.gasDiem : 0}</div>
+            <div id="${month}${day}PerStop">${totals.perStop ? totals.perStop : 0}</div>
+          </div>
       </div>`;
   return template;
 }
 
 function updateTotals(event) {
+  console.log("updateTotals");
   const inputs = document.querySelectorAll(`#routesFieldContainer div input`);
-  let runsForDay = {};
+  let valueForDay = {};
   let totalRuns = 0;
   for (field in inputs) {
-    console.log(inputs[field].id?.substring(0, 4));
-    console.log(inputs[field].id?.substring(4, inputs[field].id?.length));
-    try {
-      if (
-        inputs[field].value != "NaN" &&
-        typeof inputs[field].value != "undefined"
-      ) {
-        totalRuns += parseInt(inputs[field]?.value);
-      }
-    } catch (error) {
-      console.error(error);
+    const date = inputs[field].id?.substring(0, 4);
+    const route = inputs[field].id?.substring(4, inputs[field].id?.length);
+    const runs = parseInt(inputs[field]?.value);
+    const routeDayValue = runs * routes[route];
+
+    if (typeof valueForDay[date] != "object") {
+      valueForDay[date] = {
+        perStop: 0,
+        routePay: 0,
+        gasDiem: 0,
+        total: 0,
+      };
     }
+    // PER RUN PER DAY
+    if (typeof routeDayValue == "number") {
+      valueForDay[date].routePay += routeDayValue;
+      valueForDay[date].perStop += runs * 6;
+    }
+
+    totalRuns += runs ? runs : 0;
   }
   document.getElementById("totalStops").innerText = totalRuns;
+
+  let totalsHtml = "";
+
+  for (date in valueForDay) {
+    // GAS ALLOWANCE
+    if (valueForDay[date].gasDiem != 14 && valueForDay[date].perStop > 1) {
+      valueForDay[date].gasDiem = 14;
+    }
+    valueForDay[date].total =
+      valueForDay[date].perStop +
+      valueForDay[date].gasDiem +
+      valueForDay[date].routePay;
+
+    console.log(valueForDay[date]);
+
+    totalsHtml += createTotalsField(date, "", valueForDay[date]);
+  }
+  totalsContainerElement.innerHTML = totalsHtml;
+}
+
+function copyToClipBoard(number) {
+  navigator.clipboard.writeText(number);
 }
