@@ -6,7 +6,6 @@ const routesFieldContainerElement = document.getElementById(
 );
 const totalsContainerElement = document.getElementById("totalsContainer");
 
-routesFieldContainer;
 // prettier-ignore
 const routes = { Boise: 15, Meridian: 10, Nampa: 15, Caldwell: 20, Eagle: 15, Emmett: 25, Fruitland: 50, Homedale: 50, Kuna: 15, Middleton: 25, Marsing: 25, Melba: 25, Midvale: 75, Mountain_Home: 40, New_Plymouth: 40, Ontario: 50, Parma: 50, Payette: 50, Vale: 75, Weiser: 50,};
 let activeRoutes = {};
@@ -37,19 +36,52 @@ function updateActiveRoutes(event) {
   drawFields();
 }
 
-function createRouteCheckBox(route) {
-  const visibleString = route.replace("_", " ");
-  return `<div class="col-3">
-      <input type="checkbox" name="${route}" id="${route}" />
-      ${visibleString}
-    </div>`;
-}
+function updateTotals() {
+  const valueForDay = {};
+  let totalRuns = 0;
+  const inputs = document.querySelectorAll(`#routesFieldContainer div input`);
+  for (field in inputs) {
+    const date = inputs[field].id?.substring(0, 4);
+    const route = inputs[field].id?.substring(4, inputs[field].id?.length);
+    const runs = parseInt(inputs[field]?.value);
+    const routeDayValue = runs * routes[route];
 
-for (route in routes) {
-  activeRoutes[route] = false;
-  routesElement.innerHTML = `${routesElement.innerHTML}${createRouteCheckBox(
-    route
-  )}`;
+    if (typeof valueForDay[date] != "object") {
+      valueForDay[date] = {
+        perStop: 0,
+        routePay: 0,
+        gasDiem: 0,
+        total: 0,
+      };
+    }
+    // PER RUN PER DAY
+    // TODO evaluate if need if statement
+    if (typeof routeDayValue == "number") {
+      valueForDay[date].routePay += routeDayValue;
+      valueForDay[date].perStop += runs * 6;
+    }
+
+    totalRuns += runs ? runs : 0;
+  }
+  //   document.getElementById("totalStops").innerText = totalRuns;
+
+  let totalsHtml = "";
+
+  for (date in valueForDay) {
+    // GAS ALLOWANCE
+    if (valueForDay[date].gasDiem != 14 && valueForDay[date].perStop > 1) {
+      valueForDay[date].gasDiem = 14;
+    }
+    valueForDay[date].total =
+      valueForDay[date].perStop +
+      valueForDay[date].gasDiem +
+      valueForDay[date].routePay;
+
+    if (date[0] != "u") {
+      totalsHtml += createTotalsField(date, "", valueForDay[date]);
+    }
+  }
+  totalsContainerElement.innerHTML = totalsHtml;
 }
 
 function drawFields() {
@@ -72,6 +104,8 @@ function drawFields() {
     }
     //  y / m / d
     const dateInfo = startDateCopy.value.split("-");
+
+    // createGridTotalDay();
 
     for (route in activeRoutes) {
       if (
@@ -101,29 +135,41 @@ function drawFields() {
   }
 }
 
+function createRouteCheckBox(route) {
+  const visibleString = route.replace("_", " ");
+  return `<div class="col-3 ">
+  <div class="route-checkbox"> 
+  ${visibleString}
+      <input class="route-input" 
+      type="checkbox" 
+      name="${route}" id="${route}" />
+    </div></div>`;
+}
+
 function createRouteField(route) {
   const template = `
     <div class="row route my-2">
-    <div class="col-1">${route}</div>
-    <div class="col-11 d-flex" id="${route}Container">
-    
-    </div>
+      <div class="col-1">${route}</div>
+      <div class="col-11 d-flex" 
+      id="${route}Container"></div>
     </div>`;
 
   return template;
 }
 
 function createRouteDayField(month, day, route) {
-  const template = `<div class="mx-1">
+  const template = `<div class="route-day-field">
   ${month}/${day}
-        <input value="0" type="number" name="${route}${month}${day}" id="${month}${day}${route}" />
+        <input value="0" type="number" 
+        name="${route}${month}${day}" 
+        id="${month}${day}${route}" />
     </div>`;
   return template;
 }
 
 function createTotalsField(month, day, totals) {
   //prettier-ignore
-  const template = `<div class="mx-1">
+  const template = `<div class="totals-field">
           ${day ? `${month}/${day}` : `${month.substring(0,2)}/${month.substring(2,4)}`} 
           <div id=""> 
             <div onclick="copyToClipBoard(${totals.total})" title="Click to Copy" id="${month}${day}Total">${totals.total ? totals.total : 0}</div>
@@ -135,53 +181,37 @@ function createTotalsField(month, day, totals) {
   return template;
 }
 
-function updateTotals() {
-  const valueForDay = {};
-  let totalRuns = 0;
-  const inputs = document.querySelectorAll(`#routesFieldContainer div input`);
-  for (field in inputs) {
-    const date = inputs[field].id?.substring(0, 4);
-    const route = inputs[field].id?.substring(4, inputs[field].id?.length);
-    const runs = parseInt(inputs[field]?.value);
-    const routeDayValue = runs * routes[route];
-
-    if (typeof valueForDay[date] != "object") {
-      valueForDay[date] = {
-        perStop: 0,
-        routePay: 0,
-        gasDiem: 0,
-        total: 0,
-      };
-    }
-    // PER RUN PER DAY
-    if (typeof routeDayValue == "number") {
-      valueForDay[date].routePay += routeDayValue;
-      valueForDay[date].perStop += runs * 6;
-    }
-
-    totalRuns += runs ? runs : 0;
-  }
-  //   document.getElementById("totalStops").innerText = totalRuns;
-
-  let totalsHtml = "";
-
-  for (date in valueForDay) {
-    // GAS ALLOWANCE
-    if (valueForDay[date].gasDiem != 14 && valueForDay[date].perStop > 1) {
-      valueForDay[date].gasDiem = 14;
-    }
-    valueForDay[date].total =
-      valueForDay[date].perStop +
-      valueForDay[date].gasDiem +
-      valueForDay[date].routePay;
-
-    if (date[0] != "u") {
-      totalsHtml += createTotalsField(date, "", valueForDay[date]);
-    }
-  }
-  totalsContainerElement.innerHTML = totalsHtml;
+function createGridTotalDay() {
+  return;
 }
 
 function copyToClipBoard(number) {
   navigator.clipboard.writeText(number);
 }
+
+function hideInfo() {
+  const elements = document.querySelectorAll(".hideable");
+  // const isHidden = {};
+  // TODO
+  try {
+    for (elem in elements) {
+      elements[elem].hidden = !elements[elem].hidden;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+for (route in routes) {
+  activeRoutes[route] = false;
+  routesElement.innerHTML = `${routesElement.innerHTML}${createRouteCheckBox(
+    route
+  )}`;
+}
+
+startDate = "2023-07-01";
+endDate = "2023-07-14";
+for (n in activeRoutes) {
+  activeRoutes[n] = true;
+}
+drawFields();

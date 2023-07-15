@@ -1,6 +1,99 @@
 body {
     text-align: center;
+    background-color: #FAF9F6;
 }
+
+.top-bar {
+    background-color: rgb(0, 0, 0);
+    color: rgb(247, 239, 230);
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    display: flex;
+    justify-content: space-evenly;
+    
+    .rr-logo {
+        max-height: 4rem;
+    }
+}
+
+.date-route-menu {
+    --inside-height: 17rem;
+
+    background-color: bisque;
+    border-bottom-right-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+
+    border: black 1px solid;
+
+    .select-date {
+        border-radius: 1rem;
+        background-color: #FAF9F6;
+        border: black 1px solid;
+        height: var(--inside-height);
+    }
+
+     .text-center {
+        font-size: x-large;
+        font-weight: bold;
+        text-decoration: underline;
+        padding-top: .5rem;
+    }
+    
+    .selector {
+        font-size:20;
+    }
+    .selector div {
+        font-style: italic;
+       --horizontal-margin: .75rem;
+       --vertical-margin: .25rem;
+       margin-left: var(--horizontal-margin);
+       margin-right: var(--horizontal-margin);
+       margin-top: var(--vertical-margin);
+       margin-bottom: var(--vertical-margin);
+   }
+
+   #routeList .col-3 {
+       --vertical-margin: .2rem;
+       margin-top: var(--vertical-margin);
+       margin-bottom: var(--vertical-margin);
+   }
+   
+    .routes-container {
+        border-radius: 1rem;
+        background-color: #FAF9F6;
+        border: black 1px solid;
+        height: var(--inside-height);
+    }
+    
+    .route-checkbox {
+        --vertical-padding: .125rem;
+        
+        display: flex;
+        justify-content:space-between;
+        
+        padding-top: var(--vertical-padding);
+        padding-bottom: var(--vertical-padding);
+        padding-left: 1rem;
+        
+        text-align: left;
+        font-weight:600;
+        font-size: 18;
+        white-space: nowrap;
+        
+        background-color: #f7cfce;
+        border: rgb(0, 0, 0) 2px solid;
+        border-radius: .2rem;
+    }
+
+    .route-checkbox input {
+        margin-right: .5rem;
+    }
+
+    
+}
+
+
+
 
 
 .route {
@@ -16,6 +109,7 @@ body {
 
     .col-11 div div :first-of-type {
         font-size: xx-large;
+        border-radius: 1rem;
         font-weight: bold;
 
         
@@ -26,6 +120,7 @@ body {
         opacity: 90%;
 
         transition: ease .2s;
+        border-radius: 1rem;
         cursor: pointer;
         
     }
@@ -33,4 +128,27 @@ body {
     .col-11 div input {
         width: 3rem;
     }
+
+    .totals-field {
+        border: rgb(0, 0, 0) 2px solid;
+    }
+}
+
+.grid-container {
+    display: grid;
+}
+
+.hideable {
+    
+}
+
+.hiding {
+    transition: all .5s ease;
+    opacity: 0;
+    height: 0 !important; 
+}
+
+
+button { 
+    z-index: 0 !important;
 }

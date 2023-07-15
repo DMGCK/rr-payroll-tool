@@ -19,52 +19,79 @@
   </head>
   <body>
     <div class="container">
-      <div class="row">
-        <div class="col display-3 text-center my-3">
-          RR Contract Driver Payroll Calculator
+      <div class="row my-0">
+        <div class="col display-5 text-center mt-2 top-bar p-2">
+          <div>
+            <img
+              src="https://static.wixstatic.com/media/b0dc04_aac473e2679b4998a0d24c3b61b04c76.png/v1/fill/w_360,h_126,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/b0dc04_aac473e2679b4998a0d24c3b61b04c76.png"
+              alt=""
+              srcset=""
+              class="rr-logo"
+            />
+          </div>
+          <div>Contract Driver Payroll Calculator</div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-4 my-4">
-          <div class="align-middle">
-            <div class="text-center display-5">Select date range</div>
-            <div class="p-3 justify-content-around d-flex">
-              <div>
-                Start Date
-                <input
-                  class="m-3"
-                  type="date"
-                  name="startDate"
-                  id="startDate"
-                />
+      <div class="row date-route-menu mt-0 px-5">
+        <div class="col-3 my-4 hideable">
+          <div class="select-date">
+            <div class="text-center">Select date range</div>
+            <div class="date-selectors">
+              <div class="selector">
+                <div>Start Date</div>
+                <div>
+                  <input type="date" name="startDate" id="startDate" />
+                </div>
               </div>
-              <div>
-                End Date
-                <input class="m-3" type="date" name="endDate" id="endDate" />
+              <div class="selector">
+                <div>End Date</div>
+                <div>
+                  <input type="date" name="endDate" id="endDate" />
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-8 my-3">
-          <div class="text-center display-5 my-2">Select Routes</div>
+        <div class="col-9 my-4 routes-container hideable">
+          <div class="text-center">Select Routes</div>
           <div class="row" id="routeList"></div>
+        </div>
+        <div class="col text-end">
+          <button onclick="hideInfo()" class="btn btn-danger mt-3 mb-3">
+            Hide
+          </button>
         </div>
       </div>
       <div class="row">
         <div class="col-12 my-5" id="">
           <div class="row route">
+            <div class="col-12">
+              <div class="grid-container">
+                <!--  -->
+                <!--  -->
+                <!--  -->
+                <!--  -->
+                <!--  -->
+              </div>
+            </div>
+            <!-- BREAK -->
+            <!-- BREAK -->
+            <!-- BREAK -->
             <div class="col-1">
               <div>Date</div>
-              <div class="need-to-see">Total</div>
+              <div>Total</div>
               <div>Route Pay</div>
               <div>Gas Diem</div>
               <div>Per Stop</div>
             </div>
+            <!-- BREAK -->
+            <!-- BREAK -->
+            <!-- BREAK -->
             <div class="col-11 d-flex" id="totalsContainer"></div>
           </div>
         </div>
         <div class="col-12" id="routesFieldContainer"></div>
-        <div class="fixed-bottom">
+        <div class="fixed-bottom my-1">
           <!-- TOTAL STOPS <span id="totalStops"></span> -->
           <!-- Button trigger modal -->
           <button
