@@ -13,17 +13,16 @@
     </div>
 {/if}
 
-
 {#each $routeList as [route, price]}
 
     {#if $activeRoutes[route] === true}
-        <RouteFieldContainer route={route}> 
+        <RouteFieldContainer route={route} gridSize={$selectedDateRange.length}> 
             {#if $startDate && $endDate}
 
                 {#each $selectedDateRange as date, i }
 
-                <RouteDateField> 
-                    {$selectedDateRange[i]}
+                <RouteDateField index={i+1}> 
+                    {$selectedDateRange[i]}, Day {i+1}
                 </RouteDateField>
 
                 {/each}
@@ -52,6 +51,7 @@
 	import { activeRoutes, startDate, endDate, routeList, selectedDateRange } from '$lib/stores';
 	import RouteFieldContainer from '$lib/Components/RouteFieldContainer.svelte';
 	import RouteDateField from '$lib/Components/RouteDateField.svelte';
+	import TestGrid from '$lib/Components/TestGrid.svelte';
     let hidden = false;
     let buttonColor = ``;
 
@@ -63,6 +63,8 @@
 </script>
 
 <style>
+
+
 
     .title {
         display: flex;

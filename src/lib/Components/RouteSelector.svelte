@@ -1,7 +1,7 @@
 
 <div class="route-selector border easy-margin">
     <div class="text-center">Select Routes</div>
-    <div class="row" id="routeList">
+    <div class="grid-container" id="routeList">
 
         {#each $routeList as [route] }
         <RouteCheckbox route={route} />
@@ -22,6 +22,11 @@ import RouteCheckbox from "./RouteCheckbox.svelte";
 
 .route-selector {
         width: 60%;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
     }
 
 </style>

@@ -7,6 +7,7 @@ export const routeList = readable( Object.entries({ Boise: 15, Meridian: 10, Nam
 export const startDate = writable(undefined)
 export const endDate = writable(undefined)
 export const activeRoutes = writable({});
+export const globalWidth = writable(0);
 
 
 export const selectedDateRange = derived([startDate, endDate], ([$startDate, $endDate]) => {

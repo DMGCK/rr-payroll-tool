@@ -1,7 +1,7 @@
 
 
-<div class=border>
-    {route}
+<div class="border sizing">
+    {route.replace("_", " ")}
     <input type="checkbox" bind:checked={isActive}>
 </div>
 
@@ -21,6 +21,13 @@
 
     $: setRoute(isActive);
 
-
-
 </script>
+
+<style>
+    .sizing {
+        height: 2.5rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+    }
+</style>

@@ -14,11 +14,6 @@
 <script>
 	import DateSelector from "./DateSelector.svelte";
 	import RouteSelector from "./RouteSelector.svelte";
-	import RouteFieldContainer from "./RouteFieldContainer.svelte";
-    import { activeRoutes, routeList } from "$lib/stores";
-
-
-
 
 </script>
 
