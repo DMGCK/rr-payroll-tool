@@ -2,7 +2,7 @@
 <div class="route-container">
 
     <div class="route-title">
-        Container for {route}
+        {route}
     </div>
     <div style="--grid-size:{gridSize}" bind:clientWidth={w} class="field-container border">
         <slot></slot>
@@ -18,7 +18,7 @@ export let route:string;
 export let gridSize:number;
 let w:number;
 
-beforeUpdate(() => {
+afterUpdate(() => {
     $globalWidth = gridSize / w;
 })
 
@@ -28,16 +28,21 @@ beforeUpdate(() => {
 
     .route-container {
         display: flex;
-        justify-content: start;
+        justify-content: space-around;
     }
 
     .route-title {
-        min-width: 15%;
+        min-width: 10%;
+        display: flex;
+        flex-direction: column;
         justify-content: center;
+        font-weight: bolder;
+        font-size: xx-large;
+
     }
 
     .route-container .field-container {
-        width: 70%;
+        width: 90%;
     }    
 
     .field-container {

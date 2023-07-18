@@ -1,9 +1,11 @@
    
 <div style="grid-column:{i} width:{$globalWidth}" class="field border">
     <div>
-        <slot></slot>
+        <slot name="date" />
     </div>
-    <input value="0" min="0" type="number" />
+    <div>
+        <slot name="dayTotal" />
+    </div>
 </div>
 
 <script>

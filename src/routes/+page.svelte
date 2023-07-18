@@ -13,20 +13,36 @@
     </div>
 {/if}
 
+<RouteFieldContainer route="Total" gridSize={$selectedDateRange.length}> 
+    
+    {#if $startDate && $endDate}
+        {#each $selectedDateRange as date, i }
+            <TotalsDateField index={i+1}> 
+                <slot slot="date">
+                    {getFormattedDate(i)}
+                </slot>
+                <slot slot="dayTotal">
+                    {getTotalForDay(i)}
+                </slot>
+            </TotalsDateField>
+        {/each}
+    {/if}
+
+</RouteFieldContainer>
+
 {#each $routeList as [route, price]}
 
     {#if $activeRoutes[route] === true}
         <RouteFieldContainer route={route} gridSize={$selectedDateRange.length}> 
+            
             {#if $startDate && $endDate}
-
                 {#each $selectedDateRange as date, i }
-
                 <RouteDateField index={i+1}> 
-                    {$selectedDateRange[i]}, Day {i+1}
+                    {getFormattedDate(i)}
                 </RouteDateField>
-
                 {/each}
             {/if}
+
         </RouteFieldContainer>
     {/if}
     
@@ -51,15 +67,45 @@
 	import { activeRoutes, startDate, endDate, routeList, selectedDateRange } from '$lib/stores';
 	import RouteFieldContainer from '$lib/Components/RouteFieldContainer.svelte';
 	import RouteDateField from '$lib/Components/RouteDateField.svelte';
-	import TestGrid from '$lib/Components/TestGrid.svelte';
+	import TotalsDateField from '$lib/Components/TotalsDateField.svelte';
     let hidden = false;
     let buttonColor = ``;
-
     $: buttonColor = hidden ? 'white' : 'green'
+    $: changeRange($startDate, $endDate);
+
+
 
     function toggleHide() {
         hidden = !hidden;
     }
+
+    function changeRange() {
+        let rangeOfDates = [];
+        if ($endDate == undefined || $startDate == undefined) {
+            return rangeOfDates
+        }
+        const endDateCopy = JSON.parse(JSON.stringify($endDate));
+        const startDateCopy = document.createElement("input")
+        startDateCopy.type = "date";
+        startDateCopy.value = JSON.parse(JSON.stringify($startDate));
+    
+        while (startDateCopy.value <= endDateCopy) {
+            rangeOfDates.push(startDateCopy.value)
+            startDateCopy.stepUp();
+        }
+    
+        $selectedDateRange = rangeOfDates
+    }
+
+    function getFormattedDate(i) {
+        const dateArray = $selectedDateRange[i].split("-")
+            return `${dateArray[1]} / ${dateArray[2]}`
+    }
+
+    function getTotalForDay(i) {
+        return i;
+    }
+
 </script>
 
 <style>
