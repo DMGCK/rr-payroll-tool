@@ -50,7 +50,6 @@
 	}	
   // @ts-ignore
   function setEnd(end) {
-    $startDate = '2023-07-13';
 		$endDate = end;
 	}
 

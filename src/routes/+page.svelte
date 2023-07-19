@@ -1,7 +1,7 @@
 
 <div class=title>
     <div></div>
-    <h1>RedRock Contract Driver Payroll Tool</h1>
+    <h1>RedRock Boise Contract Driver Payroll Tool</h1>
     <div>
         
     </div>
@@ -13,22 +13,27 @@
     </div>
 {/if}
 
+
+{#if $selectedDateRange.length - 1 !== 0}
+{$selectedDateRange.length}
 <RouteFieldContainer route="Total" gridSize={$selectedDateRange.length}> 
     
     {#if $startDate && $endDate}
         {#each $selectedDateRange as date, i }
+
             <TotalsDateField index={i+1}> 
                 <slot slot="date">
                     {getFormattedDate(i)}
                 </slot>
-                <slot slot="dayTotal">
+                <slot slot="total">
                     {getTotalForDay(i)}
                 </slot>
+
             </TotalsDateField>
         {/each}
     {/if}
-
 </RouteFieldContainer>
+{/if}
 
 {#each $routeList as [route, price]}
 
@@ -37,9 +42,11 @@
             
             {#if $startDate && $endDate}
                 {#each $selectedDateRange as date, i }
+
                 <RouteDateField index={i+1}> 
                     {getFormattedDate(i)}
                 </RouteDateField>
+
                 {/each}
             {/if}
 
@@ -64,7 +71,7 @@
 <script type="ts">
     import { slide } from 'svelte/transition';
 	import PayrollConfig from "$lib/Components/PayrollConfig.svelte";
-	import { activeRoutes, startDate, endDate, routeList, selectedDateRange } from '$lib/stores';
+	import { activeRoutes, startDate, endDate, routeList, selectedDateRange, totalsObject } from '$lib/stores';
 	import RouteFieldContainer from '$lib/Components/RouteFieldContainer.svelte';
 	import RouteDateField from '$lib/Components/RouteDateField.svelte';
 	import TotalsDateField from '$lib/Components/TotalsDateField.svelte';
@@ -75,48 +82,62 @@
 
 
 
+    
+    function changeRange(_,__) {
+        try {
+            let rangeOfDates = [];
+            if ($endDate == undefined || $startDate == undefined) {
+                return rangeOfDates
+            }
+            const endDateCopy = JSON.parse(JSON.stringify($endDate));
+            const startDateCopy = document.createElement("input")
+            startDateCopy.type = "date";
+            startDateCopy.value = JSON.parse(JSON.stringify($startDate));
+            
+            while (startDateCopy.value <= endDateCopy) {
+                rangeOfDates.push(startDateCopy.value)
+                startDateCopy.stepUp();
+            }
+            
+            $selectedDateRange = rangeOfDates
+        } catch (error) {
+            console.error(error)
+            $selectedDateRange = []
+        }
+    }
+    
+    function getTotalForDay(i) {
+        const elements = document.querySelectorAll(`input .col${i}`)
+        try {
+            console.log(elements)
+            
+
+            return `working? ${elements.length} found`
+        } catch (error) {
+            return 0
+        }
+    }
+    
+    function getFormattedDate(i) {
+        const dateArray = $selectedDateRange[i].split("-")
+        const res = `${dateArray[1]} / ${dateArray[2]}`
+        return dateArray[1] ? res : ''
+    }
     function toggleHide() {
         hidden = !hidden;
     }
-
-    function changeRange() {
-        let rangeOfDates = [];
-        if ($endDate == undefined || $startDate == undefined) {
-            return rangeOfDates
-        }
-        const endDateCopy = JSON.parse(JSON.stringify($endDate));
-        const startDateCopy = document.createElement("input")
-        startDateCopy.type = "date";
-        startDateCopy.value = JSON.parse(JSON.stringify($startDate));
     
-        while (startDateCopy.value <= endDateCopy) {
-            rangeOfDates.push(startDateCopy.value)
-            startDateCopy.stepUp();
-        }
-    
-        $selectedDateRange = rangeOfDates
-    }
-
-    function getFormattedDate(i) {
-        const dateArray = $selectedDateRange[i].split("-")
-            return `${dateArray[1]} / ${dateArray[2]}`
-    }
-
-    function getTotalForDay(i) {
-        return i;
-    }
-
 </script>
 
 <style>
-
-
-
+    
+    
+    
     .title {
         display: flex;
         flex-direction: column;
     }
-
+    
     h1 {
         text-align: center;
     }

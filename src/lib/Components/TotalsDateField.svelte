@@ -1,17 +1,31 @@
    
-<div style="grid-column:{i} width:{$globalWidth}" class="field border">
+
+
+<div style="width:{$globalWidth}" class="field border">
     <div>
         <slot name="date" />
     </div>
     <div>
-        <slot name="dayTotal" />
+        <!-- {$totalsObject[totalProp]} -->
+        <slot name="total">
+            0
+        </slot>
     </div>
 </div>
 
+
 <script>
 
-	import { globalWidth } from "$lib/stores";
-    export let i;
+	import { globalWidth, totalsObject } from "$lib/stores";
+	import { onMount } from "svelte";
+    export let index;
+    const totalProp = `col${index}`
+
+    // onMount(() => {
+    //     if ($totalsObject[totalProp] !== 0) {
+    //         $totalsObject[totalProp] = 0
+    //     }
+    // })
     
 </script>
 

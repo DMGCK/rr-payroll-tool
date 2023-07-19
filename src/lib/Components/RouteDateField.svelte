@@ -1,15 +1,18 @@
    
-<div style="grid-column:{i} width:{$globalWidth}" class="field border">
-    <div>
+<div style="width:{$globalWidth}" class="field border">
+    <div >
         <slot></slot>
     </div>
-    <input value="0" min="0" type="number" />
+    <input class={`col${index}`} bind:value={fieldValue} min="0" type="number" />
 </div>
 
 <script>
 
-	import { globalWidth } from "$lib/stores";
-    export let i;
+	import { globalWidth, totalsObject } from "$lib/stores";
+    export let index;
+    let fieldValue = 0;
+
+    // $: $totalsObject[`col${index}`] = fieldValue
     
 </script>
 
@@ -19,6 +22,7 @@
         max-width: 3rem;
         height: 3rem;
         font-size: larger;
+        text-align: center;
     }
 
 </style>

@@ -7,3 +7,4 @@ export const endDate = writable(undefined)
 export const activeRoutes = writable({});
 export const globalWidth = writable(0);
 export const selectedDateRange = writable([''])
+export const totalsObject = writable({});
