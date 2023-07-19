@@ -21,12 +21,9 @@
     {#if $startDate && $endDate}
         {#each $selectedDateRange as date, i }
 
-            <TotalsDateField index={i+1}> 
+            <TotalsDateField on:fieldUpdate row={`row${date}`} index={i+1}> 
                 <slot slot="date">
                     {getFormattedDate(i)}
-                </slot>
-                <slot slot="total">
-                    {getTotalForDay(i)}
                 </slot>
 
             </TotalsDateField>
@@ -43,7 +40,7 @@
             {#if $startDate && $endDate}
                 {#each $selectedDateRange as date, i }
 
-                <RouteDateField index={i+1}> 
+                <RouteDateField row={route} index={i+1}> 
                     {getFormattedDate(i)}
                 </RouteDateField>
 
@@ -71,7 +68,7 @@
 <script type="ts">
     import { slide } from 'svelte/transition';
 	import PayrollConfig from "$lib/Components/PayrollConfig.svelte";
-	import { activeRoutes, startDate, endDate, routeList, selectedDateRange, totalsObject } from '$lib/stores';
+	import { activeRoutes, startDate, endDate, routeList, selectedDateRange, totalsCounter } from '$lib/stores';
 	import RouteFieldContainer from '$lib/Components/RouteFieldContainer.svelte';
 	import RouteDateField from '$lib/Components/RouteDateField.svelte';
 	import TotalsDateField from '$lib/Components/TotalsDateField.svelte';
