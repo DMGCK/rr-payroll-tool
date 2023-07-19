@@ -8,11 +8,36 @@
 
 <script>
 
-	import { globalWidth, totalsObject } from "$lib/stores";
+	import { globalWidth, totalsCounter } from "$lib/stores";
+	import { createEventDispatcher } from "svelte";
     export let index;
+    export let row;
+    const dispatch = createEventDispatcher();
     let fieldValue = 0;
 
-    // $: $totalsObject[`col${index}`] = fieldValue
+
+    $: updateEvent(fieldValue)
+    function updateEvent(__) {
+        console.log('firing update')
+        dispatch("fieldUpdate", {
+            total : fieldValue,
+            location: `i${index}${row}` 
+        })
+    }
+
+    try {
+        $totalsCounter[`i${index}`][row] = fieldValue;
+        console.error(`SET SUCCESS @ Input ${fieldValue}`)
+        
+    } catch (error) {
+        console.error(`SET ERROR @ Input ${error}`)
+        $totalsCounter[`i${index}`] = {row: fieldValue}
+
+    }
+
+
+
+    // $: $totalsCounter[`col${index}`] = fieldValue
     
 </script>
 

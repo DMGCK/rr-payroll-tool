@@ -5,28 +5,26 @@
     <div>
         <slot name="date" />
     </div>
-    <div>
-        <!-- {$totalsObject[totalProp]} -->
-        <slot name="total">
+    <div on:fieldUpdate={logIt}>
+        {totalForColumn}
+        <!-- <slot name="total">
             0
-        </slot>
+        </slot> -->
     </div>
 </div>
 
 
 <script>
 
-	import { globalWidth, totalsObject } from "$lib/stores";
+	import { globalWidth, totalsCounter } from "$lib/stores";
 	import { onMount } from "svelte";
     export let index;
-    const totalProp = `col${index}`
+    let totalForColumn = 0;
 
-    // onMount(() => {
-    //     if ($totalsObject[totalProp] !== 0) {
-    //         $totalsObject[totalProp] = 0
-    //     }
-    // })
-    
+    function logIt(event) {
+        console.log(event)
+    }
+
 </script>
 
 <style>
